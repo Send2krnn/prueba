@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería Élysée | Arte Exclusivo y Sofisticado</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:wght@400;700&display=swap">
+    <style>
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --accent: #ff3e9d;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --shadow: 0 15px 30px rgba(0,0,0,0.1);
+            --transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        /* Preloader */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: opacity 0.5s ease;
+        }
+
+        .preloader.fade-out {
+            opacity: 0;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 5rem 0 8rem;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') center/cover;
+            opacity: 0.15;
+            z-index: 0;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            background: linear-gradient(to right, white, #f3ec78);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInDown 1s ease;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            opacity: 0.9;
+            animation: fadeIn 1.5s ease;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem 0;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .navbar.scrolled {
+            background: rgba(0,0,0,0.9);
+            padding: 1rem 0;
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Gallery */
+        .gallery-section {
+            padding: 5rem 0;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--dark);
+            display: inline-block;
+            position: relative;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+        }
+
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            padding: 0 2rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            height: 400px;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(.77,0,.18,1), transform 0.8s cubic-bezier(.77,0,.18,1);
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .gallery-item.fade-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .gallery-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover .gallery-img {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.92) 80%, transparent 100%);
+            padding: 2rem 1.2rem 1.2rem 1.2rem;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            color: white;
+            transform: translateY(100%);
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+
+        .gallery-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .gallery-category {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Features */
+        .features-section {
+            padding: 5rem 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            clip-path: polygon(0 10%, 100% 0, 100% 90%, 0 100%);
+            margin: 5rem 0;
+        }
+
+        .features-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(106,17,203,0.08);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 16px 40px rgba(37,117,252,0.13);
+            background: linear-gradient(135deg, #f5f7fa 60%, #e0c3fc 100%);
+        }
+
+        .feature-icon {
+            font-size: 3.5rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 2px 8px rgba(255,62,157,0.15));
+        }
+
+        .feature-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        /* Testimonials */
+        .testimonials-section {
+            padding: 5rem 0;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .testimonials-container {
+            position: relative;
+            padding: 0 2rem;
+        }
+
+        .testimonial-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin: 0 1rem;
+            position: relative;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .testimonial-text::before {
+            content: '"';
+            font-size: 5rem;
+            position: absolute;
+            top: -2rem;
+            left: -1rem;
+            color: rgba(0,0,0,0.05);
+            font-family: serif;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+
+        .author-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 1rem;
+        }
+
+        .author-info h4 {
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .author-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #232526 0%, #414345 100%);
+            color: #f8f9fa;
+            padding: 5rem 0 2rem;
+            position: relative;
+            border-top: 4px solid var(--accent);
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-col h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+            color: var(--accent);
+        }
+
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--accent);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            margin-right: 1rem;
+            color: white;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 3rem;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease forwards;
+        }
+
+        /* Botón de compra mejorado */
+        .buy-btn {
+            background: linear-gradient(90deg, var(--accent), var(--primary));
+            color: white;
+            border: none;
+            padding: 0.7rem 1.7rem;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(106,17,203,0.15);
+            transition: background 0.3s, transform 0.2s;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        .buy-btn:hover {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scale(1.07);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .nav-container {
+                flex-direction: column;
+            }
+            
+            .nav-links {
+                margin-top: 1.5rem;
+            }
+            
+            .nav-links li {
+                margin: 0 0.5rem;
+            }
+            
+            .gallery-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Agrega estilos para el precio y botón */
+        .gallery-price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        /* Responsive mejorado para móviles */
+        @media (max-width: 900px) {
+            .gallery-container,
+            .features-container,
+            .footer-container {
+                grid-template-columns: 1fr;
+                padding: 0 1rem;
+            }
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            .feature-card,
+            .testimonial-card {
+                padding: 1.5rem;
+            }
+            .header-content {
+                padding: 0 1rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+            .subtitle {
+                font-size: 1rem;
+            }
+            .navbar {
+                padding: 0.7rem 0;
+            }
+            .nav-container {
+                flex-direction: column;
+                padding: 0 1rem;
+            }
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+                margin-top: 1rem;
+            }
+            .nav-links li {
+                margin: 0.5rem 0;
+            }
+            .gallery-section,
+            .features-section,
+            .testimonials-section {
+                padding: 2.5rem 0;
+            }
+            .gallery-item {
+                height: 250px;
+            }
+            .gallery-title {
+                font-size: 1.1rem;
+            }
+            .feature-icon {
+                font-size: 2.2rem;
+            }
+            .footer-container {
+                gap: 1.5rem;
+                padding: 0 0.5rem;
+            }
+            .footer-col h3 {
+                font-size: 1.1rem;
+            }
+            .copyright {
+                font-size: 0.9rem;
+            }
+            .modalCompra > div {
+                padding: 1rem !important;
+                max-width: 98vw !important;
+            }
+        }
+
+        /* ...resto de tus estilos... */
+    </style>
+</head>
+<body id="inicio">
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="loader"></div>
+        <p>Cargando experiencia...</p>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#inicio" class="logo">Galería<span> Élysée</span></a>
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#galeria">Galería</a></li>
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#testimonios">Testimonios</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <h1>Adquiere Arte Único y Exclusivo</h1>
+            <p class="subtitle">Conecta con el arte, decora tu vida y apoya a artistas auténticos. Compra cuadros originales y lleva inspiración a tu espacio.</p>
+            <a href="#galeria" class="buy-btn" style="margin-top:2rem; font-size:1.2rem;">Ver Galería</a>
+        </div>
+    </header>
+
+    <!-- Gallery Section -->
+    <section id="galeria" class="gallery-section">
+        <div class="section-title">
+            <h2>Cuadros Originales en Venta</h2>
+            <p>Obras seleccionadas para coleccionistas y amantes del arte. ¡Cada pieza es irrepetible!</p>
+        </div>
+        <div class="gallery-container">
+            <!-- Cuadro 1 -->
+            <div class="gallery-item">
+                <img src="PaisajePatos.jpg" alt="Obra 1" class="gallery-img">
+                <div class="gallery-overlay">
+                    <span class="gallery-category">Óleo</span>
+                    <h3 class="gallery-title">Amanecer en el Lago</h3>
+                    <p class="gallery-price">$140 USD</p>
+                    <button class="buy-btn" onclick="showModal('Amanecer en el Lago', '$140 USD')">Comprar</button>
+                </div>
+            </div>
+            <!-- Cuadro 2 -->
+            <div class="gallery-item">
+                <img src="paisajeAmarillo.jpg" alt="Obra 2" class="gallery-img">
+                <div class="gallery-overlay">
+                    <span class="gallery-category">Acrílico</span>
+                    <h3 class="gallery-title">Amanecer Brillante</h3>
+                    <p class="gallery-price">$180 USD</p>
+                    <button class="buy-btn" onclick="showModal('Amanecer Brillante', '$180 USD')">Comprar</button>
+                </div>
+            </div>
+            <!-- Cuadro 3 -->
+            <div class="gallery-item">
+                <img src="coleccionDeArte.jpg" alt="Obra 3" class="gallery-img">
+                <div class="gallery-overlay">
+                    <span class="gallery-category">Acuarela</span>
+                    <h3 class="gallery-title">Colección Abstracta</h3>
+                    <p class="gallery-price">$250 USD</p>
+                    <button class="buy-btn" onclick="showModal('Colección Abstracta', '$250 USD')">Comprar</button>
+                </div>
+            </div>
+            <!-- Cuadro 4: Retrato de una chica -->
+            <div class="gallery-item">
+                <img src="RetratoChica.jpg" alt="Retrato de una chica" class="gallery-img">
+                <div class="gallery-overlay">
+                    <span class="gallery-category">Retrato</span>
+                    <h3 class="gallery-title">Misterio en la Mirada</h3>
+                    <p class="gallery-price">$200 USD</p>
+                    <button class="buy-btn" onclick="showModal('Misterio en la Mirada', '$200 USD')">Comprar</button>
+                </div>
+            </div>
+            <!-- Agrega más cuadros según lo necesites -->
+        </div>
+        <div style="text-align:center; margin-top:2rem;">
+            <a href="#contacto" class="buy-btn" style="font-size:1.1rem;">¿Tienes dudas? Contáctanos</a>
+        </div>
+    </section>
+
+    <!-- Modal para compra -->
+    <div id="modalCompra" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7); align-items:center; justify-content:center; z-index:99999;">
+        <div style="background:white; padding:2rem; border-radius:10px; max-width:90vw; text-align:center; position:relative;">
+            <span style="position:absolute; top:10px; right:20px; cursor:pointer; font-size:1.5rem;" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitulo"></h2>
+            <p id="modalPrecio"></p>
+            <p>Para comprar este cuadro, contáctanos por WhatsApp o correo electrónico.</p>
+            <a href="https://wa.me/521234567890" target="_blank" style="display:inline-block; margin:1rem 0; background:#25D366; color:white; padding:0.7rem 1.5rem; border-radius:5px; text-decoration:none;">WhatsApp</a>
+            <a href="mailto:info@galeriapro.com" style="display:inline-block; margin:1rem 0; background:#2575fc; color:white; padding:0.7rem 1.5rem; border-radius:5px; text-decoration:none;">Correo</a>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <section id="servicios" class="features-section">
+        <div class="section-title">
+            <h2>Ventajas de Comprar en GaleríaPro</h2>
+        </div>
+        <div class="features-container">
+            <!-- Feature 1 -->
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-gem"></i>
+                </div>
+                <h3 class="feature-title">Obras Certificadas</h3>
+                <p>Garantizamos la autenticidad de cada cuadro con certificado firmado por el artista. Invierte en arte real y seguro.</p>
+            </div>
+            <!-- Feature 2 -->
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-hand-holding-heart"></i>
+                </div>
+                <h3 class="feature-title">Apoya a Artistas</h3>
+                <p>El 100% de las ventas va directamente a los creadores. Al comprar aquí, impulsas el talento y la creatividad local.</p>
+            </div>
+            <!-- Feature 3 -->
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-shipping-fast"></i>
+                </div>
+                <h3 class="feature-title">Envío Protegido</h3>
+                <p>Empaque profesional y seguro. Tu obra llegará en perfectas condiciones, lista para colgar y disfrutar.</p>
+            </div>
+            <!-- Feature 4 -->
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-undo"></i>
+                </div>
+                <h3 class="feature-title">Satisfacción Garantizada</h3>
+                <p>Si la obra no cumple tus expectativas, tienes 7 días para devolverla. ¡Compra arte sin riesgos!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonios" class="testimonials-section">
+        <div class="section-title">
+            <h2>Lo que dicen nuestros compradores</h2>
+        </div>
+        <div class="testimonials-container">
+            <!-- Testimonial 1 -->
+            <div class="testimonial-card">
+                <p class="testimonial-text">"Compré un cuadro para mi sala y superó todas mis expectativas. ¡La calidad y el servicio son excepcionales!"</p>
+                <div class="testimonial-author">
+                    <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Cliente 1" class="author-img">
+                    <div class="author-info">
+                        <h4>María González</h4>
+                        <p>Compradora de arte</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Testimonial 2 -->
+            <div class="testimonial-card">
+                <p class="testimonial-text">"Me encantó el trato personalizado y la rapidez del envío. ¡Repetiré mi compra pronto!"</p>
+                <div class="testimonial-author">
+                    <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Cliente 2" class="author-img">
+                    <div class="author-info">
+                        <h4>Carlos Méndez</h4>
+                        <p>Amante del arte</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contacto">
+        <div class="footer-container">
+            <!-- Columna 1 -->
+            <div class="footer-col">
+                <h3>Galería Élysée</h3>
+                <p>Tu espacio para adquirir arte original, apoyar artistas y transformar tu entorno.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <!-- Columna 2 -->
+            <div class="footer-col">
+                <h3>Compra Arte</h3>
+                <ul class="footer-links">
+                    <li><a href="#galeria">Galería</a></li>
+                    <li><a href="#servicios">Ventajas</a></li>
+                    <li><a href="#testimonios">Testimonios</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </div>
+            <!-- Columna 3 -->
+            <div class="footer-col">
+                <h3>Contacto</h3>
+                <ul class="footer-links">
+                    <li><i class="fas fa-map-marker-alt"></i> Av. Principal 123, Ciudad</li>
+                    <li><i class="fas fa-phone"></i> +1 234 567 890</li>
+                    <li><i class="fas fa-envelope"></i> info@galeriapro.com</li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 Galería Élysée. Arte original para todos.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Preloader
+        window.addEventListener('load', function() {
+            const preloader = document.querySelector('.preloader');
+            preloader.classList.add('fade-out');
+            
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 500);
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll animations
+        const fadeElements = document.querySelectorAll('.gallery-item, .feature-card, .testimonial-card');
+        
+        const fadeInOnScroll = function() {
+            for (let i = 0; i < fadeElements.length; i++) {
+                const elem = fadeElements[i];
+                const distInView = elem.getBoundingClientRect().top - window.innerHeight + 100;
+                
+                if (distInView < 0) {
+                    elem.classList.add('fade-in');
+                }
+            }
+        };
+        
+        window.addEventListener('scroll', fadeInOnScroll);
+        fadeInOnScroll();
+
+        // Animación de entrada para galería
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        function fadeInGalleryOnScroll() {
+            for (let i = 0; i < galleryItems.length; i++) {
+                const elem = galleryItems[i];
+                const distInView = elem.getBoundingClientRect().top - window.innerHeight + 100;
+                if (distInView < 0) {
+                    elem.classList.add('fade-in');
+                }
+            }
+        }
+        window.addEventListener('scroll', fadeInGalleryOnScroll);
+        fadeInGalleryOnScroll();
+
+        // Modal de compra
+        function showModal(titulo, precio) {
+            document.getElementById('modalTitulo').textContent = titulo;
+            document.getElementById('modalPrecio').textContent = precio;
+            document.getElementById('modalCompra').style.display = 'flex';
+        }
+        function closeModal() {
+            document.getElementById('modalCompra').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
